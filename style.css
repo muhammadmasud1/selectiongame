@@ -1,0 +1,557 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
+*, *::before, *::after {
+  padding: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Raleway, sans-serif;
+  background-color: #000;
+  color: #006;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  perspective: 100vmin;
+  font-size: 4vmin;
+  overflow: hidden;
+  background: url(img/hero.jpg) no-repeat;
+  background-size: cover;
+  background-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+body *:not(:empty) {
+  transform-style: preserve-3d;
+}
+
+:root {
+  --duration: 2s;
+}
+
+button {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10em;
+  height: 10em;
+}
+
+input {
+  display: none;
+}
+
+label {
+  cursor: pointer;
+}
+
+#rb-init:checked ~ .scene {
+  --bulbAnimation: bulb-pre;
+  --bulbPlayState: running;
+  --btnClose: 0;
+  --startMenuDisplay: grid;
+}
+#rb-init:checked ~ .scene .winner {
+  animation: none;
+}
+#rb-init:checked ~ .scene .btnText::after {
+  animation: none;
+}
+
+#rb-start:checked ~ .scene {
+  --bulbAnimation: bulb;
+  --scene-rx: 60deg;
+  --preDelay: 60;
+  --bulbPlayState: running;
+  --btnDuration: 1s 1s;
+  --stopLabelDisplay: block;
+  --markOpacity: 1;
+  --winnerPlayState: running;
+}
+#rb-start:checked ~ .scene .btnText::before {
+  animation: startingText 2s step-end forwards;
+}
+@keyframes startingText {
+  0% {
+    content: "Catch";
+  }
+  20% {
+    content: "That";
+  }
+  40% {
+    content: "Light!";
+  }
+  60% {
+    content: "";
+  }
+  80%, 100% {
+    content: "Go!";
+  }
+}
+#rb-start:checked ~ .scene .label-stop {
+  animation: labelEnter 2s step-end forwards;
+}
+
+#rb-stop:checked ~ .scene {
+  --bulbAnimation: bulb;
+  --preDelay: 60;
+  --btnClose: 0.5;
+  --winnerOpacity: 1;
+  --winningTextOpacity: 1;
+  --initLabelDisplay: block;
+}
+#rb-stop:checked ~ .scene .label-init {
+  animation: labelEnter 1.5s step-end forwards;
+}
+#rb-stop:checked ~ .scene .btnText::before {
+  content: "Try again?";
+  transform: translateY(1em) scale(0.5);
+}
+
+@keyframes labelEnter {
+  0% {
+    transform: translateZ(1em) translateX(100vw);
+  }
+  80%, 100% {
+    transform: translateZ(1em) translateX(0);
+  }
+}
+.scene {
+  position: relative;
+  transform: rotateX(var(--scene-rx, 0deg));
+  transition: transform 1s 1s;
+}
+
+.button {
+  position: absolute;
+  transform: translateZ(-0.5em);
+}
+.button i {
+  position: absolute;
+  inset: -6em;
+  background-color: hsl(180, 75%, var(--light, 75%));
+  border-radius: 50%;
+  transform: translateZ(calc(var(--tz) * var(--btnClose, 1)));
+  transition: transform var(--btnDuration, 0.5s);
+  pointer-events: none;
+}
+.button i:nth-child(1) {
+  --tz: 0.1em;
+  --light: 20%;
+}
+.button i:nth-child(2) {
+  --tz: 0.2em;
+  --light: 25%;
+}
+.button i:nth-child(3) {
+  --tz: 0.3em;
+  --light: 30%;
+}
+.button i:nth-child(4) {
+  --tz: 0.4em;
+  --light: 35%;
+}
+.button i:nth-child(5) {
+  --tz: 0.5em;
+  --light: 40%;
+}
+.button i:nth-child(6) {
+  --tz: 0.6em;
+  --light: 45%;
+}
+.button i:nth-child(7) {
+  --tz: 0.7em;
+  --light: 50%;
+}
+.button i:nth-child(8) {
+  --tz: 0.8em;
+  --light: 55%;
+}
+.button i:nth-child(9) {
+  --tz: 0.9em;
+  --light: 60%;
+}
+.button i:nth-child(10) {
+  --tz: 1em;
+  --light: 65%;
+}
+.button:active i {
+  --btnClose: 0.5;
+  transition: none;
+}
+
+.btnText {
+  box-shadow: 0 0 2em rgba(255, 255, 255, 0.5333333333) inset;
+  color: #004;
+}
+.btnText::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 2em;
+}
+.btnText::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 2em;
+  opacity: var(--winningTextOpacity, 0);
+  animation: winnerText var(--duration) infinite step-end var(--winnerPlayState, paused);
+}
+@keyframes winnerText {
+  0% {
+    content: "AMAZING!";
+  }
+  1.666%, 98.333% {
+    content: "Almost...";
+  }
+  3.333% {
+    content: "Missed :(";
+  }
+}
+
+#rb-speed1:checked ~ .scene {
+  --duration: 5s;
+}
+
+#rb-speed2:checked ~ .scene {
+  --duration: 4s;
+}
+
+#rb-speed3:checked ~ .scene {
+  --duration: 3s;
+}
+
+#rb-speed4:checked ~ .scene {
+  --duration: 2s;
+}
+
+#rb-speed5:checked ~ .scene {
+  --duration: 1s;
+}
+
+#rb-speed1:checked ~ .scene .speeds label:nth-child(1),
+#rb-speed2:checked ~ .scene .speeds label:nth-child(2),
+#rb-speed3:checked ~ .scene .speeds label:nth-child(3),
+#rb-speed4:checked ~ .scene .speeds label:nth-child(4),
+#rb-speed5:checked ~ .scene .speeds label:nth-child(5) {
+  --color: green;
+}
+
+.startMenu {
+  display: var(--startMenuDisplay, none);
+  place-items: center;
+  position: absolute;
+  inset: -4em -6em;
+  transform: translateZ(1em);
+}
+.startMenu .speeds {
+  display: flex;
+  gap: 1em;
+}
+.startMenu .speeds label {
+  border-bottom: 3px solid var(--color, transparent);
+}
+.startMenu .speeds svg {
+  height: 1em;
+  fill: var(--color, maroon);
+}
+.startMenu .label-start {
+  border: 2px outset #600;
+  padding: 0.5em;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.startMenu .label-start:active {
+  border-style: inset;
+}
+
+.label-stop {
+  position: absolute;
+  inset: -6em;
+  border-radius: 50%;
+  transform: translateZ(1em) translateX(100vw);
+  display: var(--stopLabelDisplay, none);
+}
+
+.label-init {
+  position: absolute;
+  inset: -6em;
+  border-radius: 50%;
+  transform: translateZ(1em) translateX(100vw);
+  display: var(--initLabelDisplay, none);
+}
+
+.winner {
+  position: absolute;
+  animation: winner var(--duration) infinite steps(60, end) var(--winnerPlayState, paused);
+}
+@keyframes winner {
+  from {
+    transform: rotate(0deg) translateY(10em);
+  }
+  to {
+    transform: rotate(360deg) translateY(10em);
+  }
+}
+.winner::after {
+  content: "";
+  position: absolute;
+  inset: -1em;
+  border-radius: 50%;
+  border: 0.25em solid;
+  border-color: #0ff transparent;
+  animation: winnerAfter 1s infinite linear;
+  opacity: var(--winnerOpacity, 0);
+}
+@keyframes winnerAfter {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.wheel {
+  pointer-events: none;
+}
+.wheel::before {
+  content: "";
+  position: absolute;
+  inset: -12em;
+  background-image: radial-gradient(rgba(0, 0, 0, 0) 6em, #300 6em, #000 9em, #444 9.5em 10.5em, rgba(0, 0, 0, 0) 11em);
+  transform: translateZ(-0.5em);
+}
+.wheel::after {
+  content: "";
+  position: absolute;
+  inset: -1em;
+  background-image: radial-gradient(closest-side, rgba(0, 0, 0, 0), #0f0, rgba(0, 0, 0, 0));
+  opacity: var(--markOpacity, 0);
+  transition: opacity 1s 1s;
+  animation: mark 400ms infinite ease-in-out alternate;
+}
+@keyframes mark {
+  from {
+    transform: translateZ(-0.5em) translateY(10em) scale(0.75);
+  }
+  to {
+    transform: translateZ(-0.5em) translateY(10em) scale(1.25);
+  }
+}
+
+.bulb {
+  --delay: calc(var(--duration) / var(--preDelay, 4) * var(--ix) - var(--duration) * 15) ;
+  position: absolute;
+  inset: -0.5em;
+  border-radius: 50%;
+  background-image: radial-gradient(circle at top, rgba(255, 255, 255, 0.1333333333), 70%, rgba(0, 0, 0, 0.8666666667));
+  transform: rotate(calc(var(--ix) * 6deg)) translateY(10em) rotate(calc(var(--ix) * -6deg)) rotateX(calc(var(--scene-rx, 0deg) * -1));
+  transition: transform 1s 1s;
+  animation: var(--bulbAnimation, bulb-pre) var(--duration) var(--delay) infinite var(--bulbPlayState, paused) step-end;
+}
+@keyframes bulb-pre {
+  0%, 100% {
+    background-color: var(--clr, #ff0);
+  }
+  25%, 75% {
+    background-color: #220;
+  }
+}
+@keyframes bulb {
+  0% {
+    background-color: var(--clr, #ff0);
+  }
+  1.666%, 100% {
+    background-color: #220;
+  }
+}
+.bulb:last-child {
+  --clr: #0f0;
+}
+.bulb:first-child, .bulb:nth-last-child(2) {
+  --clr: #af0;
+}
+.bulb:nth-child(1) {
+  --ix: 1;
+}
+.bulb:nth-child(2) {
+  --ix: 2;
+}
+.bulb:nth-child(3) {
+  --ix: 3;
+}
+.bulb:nth-child(4) {
+  --ix: 4;
+}
+.bulb:nth-child(5) {
+  --ix: 5;
+}
+.bulb:nth-child(6) {
+  --ix: 6;
+}
+.bulb:nth-child(7) {
+  --ix: 7;
+}
+.bulb:nth-child(8) {
+  --ix: 8;
+}
+.bulb:nth-child(9) {
+  --ix: 9;
+}
+.bulb:nth-child(10) {
+  --ix: 10;
+}
+.bulb:nth-child(11) {
+  --ix: 11;
+}
+.bulb:nth-child(12) {
+  --ix: 12;
+}
+.bulb:nth-child(13) {
+  --ix: 13;
+}
+.bulb:nth-child(14) {
+  --ix: 14;
+}
+.bulb:nth-child(15) {
+  --ix: 15;
+}
+.bulb:nth-child(16) {
+  --ix: 16;
+}
+.bulb:nth-child(17) {
+  --ix: 17;
+}
+.bulb:nth-child(18) {
+  --ix: 18;
+}
+.bulb:nth-child(19) {
+  --ix: 19;
+}
+.bulb:nth-child(20) {
+  --ix: 20;
+}
+.bulb:nth-child(21) {
+  --ix: 21;
+}
+.bulb:nth-child(22) {
+  --ix: 22;
+}
+.bulb:nth-child(23) {
+  --ix: 23;
+}
+.bulb:nth-child(24) {
+  --ix: 24;
+}
+.bulb:nth-child(25) {
+  --ix: 25;
+}
+.bulb:nth-child(26) {
+  --ix: 26;
+}
+.bulb:nth-child(27) {
+  --ix: 27;
+}
+.bulb:nth-child(28) {
+  --ix: 28;
+}
+.bulb:nth-child(29) {
+  --ix: 29;
+}
+.bulb:nth-child(30) {
+  --ix: 30;
+}
+.bulb:nth-child(31) {
+  --ix: 31;
+}
+.bulb:nth-child(32) {
+  --ix: 32;
+}
+.bulb:nth-child(33) {
+  --ix: 33;
+}
+.bulb:nth-child(34) {
+  --ix: 34;
+}
+.bulb:nth-child(35) {
+  --ix: 35;
+}
+.bulb:nth-child(36) {
+  --ix: 36;
+}
+.bulb:nth-child(37) {
+  --ix: 37;
+}
+.bulb:nth-child(38) {
+  --ix: 38;
+}
+.bulb:nth-child(39) {
+  --ix: 39;
+}
+.bulb:nth-child(40) {
+  --ix: 40;
+}
+.bulb:nth-child(41) {
+  --ix: 41;
+}
+.bulb:nth-child(42) {
+  --ix: 42;
+}
+.bulb:nth-child(43) {
+  --ix: 43;
+}
+.bulb:nth-child(44) {
+  --ix: 44;
+}
+.bulb:nth-child(45) {
+  --ix: 45;
+}
+.bulb:nth-child(46) {
+  --ix: 46;
+}
+.bulb:nth-child(47) {
+  --ix: 47;
+}
+.bulb:nth-child(48) {
+  --ix: 48;
+}
+.bulb:nth-child(49) {
+  --ix: 49;
+}
+.bulb:nth-child(50) {
+  --ix: 50;
+}
+.bulb:nth-child(51) {
+  --ix: 51;
+}
+.bulb:nth-child(52) {
+  --ix: 52;
+}
+.bulb:nth-child(53) {
+  --ix: 53;
+}
+.bulb:nth-child(54) {
+  --ix: 54;
+}
+.bulb:nth-child(55) {
+  --ix: 55;
+}
+.bulb:nth-child(56) {
+  --ix: 56;
+}
+.bulb:nth-child(57) {
+  --ix: 57;
+}
+.bulb:nth-child(58) {
+  --ix: 58;
+}
+.bulb:nth-child(59) {
+  --ix: 59;
+}
+.bulb:nth-child(60) {
+  --ix: 60;
+}/*# sourceMappingURL=style.css.map */
